@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,44 +21,94 @@ public class NumberPlateManager : MonoBehaviour
 
     private Text[,] text;
 
-    [SerializeField]
+    private NumText[,] numTexts;
+
+    private List<int> selectedNumbers = new List<int>();
+
+    private int selectNum = 0;
+
+    [SerializeField, Header("空欄の数")]
+    private int blankToSelect = 30;
+
+    [SerializeField, Header("シャッフルする回数")]
     private int shuffle = 100;
 
     [SerializeField]
     private Text[] defaultText;
 
+    [SerializeField]
+    private NumText[] defaultNumText;
+
+    private Image nowImage;
+
     void Start()
     {
         text = TextInit(defaultText);
+        numTexts = NumTextInit(defaultNumText);
         AnsChange();
     }
-    
+
     void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if(nowImage != null) nowImage.color = Color.white;
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
 
+            if (hit.collider != null && hit.collider.gameObject.TryGetComponent<NumText>(out NumText numText))
+            {
+                nowImage = numText.bg;
+                nowImage.color = Color.green;
+
+
+            }
+        }
     }
 
+    /// <summary>
+    ///  空白にする場所をランダムで選択する
+    /// </summary>
+    private void SelectRandomNumbers()
+    {
+        for (int i = 0; i < blankToSelect; i++)
+        {
+            int randomNum;
+            do
+            {
+                randomNum = Random.Range(0, 81);
+            } while (selectedNumbers.Contains(randomNum)); 
+
+            selectedNumbers.Add(randomNum);
+        }
+    }
+
+    /// <summary>
+    /// 解答をシャッフルする
+    /// </summary>
+    /// <param name="array"></param>
+    /// <returns></returns>
     private int[,] ShuffleAns(int[,] array)
     {
         int[,] swappedArray = (int[,])array.Clone();
 
-        for (int i = 0;i< shuffle; i++)
+        for (int i = 0; i < shuffle; i++)
         {
-            if(Random.Range(0,2) == 0)
+            if (Random.Range(0, 2) == 0)
             {
                 //行
-                if(Random.Range(0, 2) == 0)
+                if (Random.Range(0, 2) == 0)
                 {
                     //3行
                     int place = Random.Range(0, 3);
-                    if(place == 0)
+                    if (place == 0)
                     {
                         //1～2入れ替え
                         swappedArray = SwapRows(swappedArray, 0, 3);
                         swappedArray = SwapRows(swappedArray, 1, 4);
                         swappedArray = SwapRows(swappedArray, 2, 5);
                     }
-                    else if(place == 1)
+                    else if (place == 1)
                     {
                         //1～3入れ替え
                         swappedArray = SwapRows(swappedArray, 0, 6);
@@ -183,7 +234,7 @@ public class NumberPlateManager : MonoBehaviour
     /// <summary>
     /// テキスト表示
     /// </summary>
-    private void DrawText()
+    public void DrawText()
     {
         for (int i = 0; i < 9; i++)
         {
@@ -204,11 +255,11 @@ public class NumberPlateManager : MonoBehaviour
         Text[,] texts = new Text[9, 9];
         int j = 0, k = 0;
 
-        for(int i = 0; i < 81; i++)
+        for (int i = 0; i < 81; i++)
         {
             texts[j, k] = array[i];
             k++;
-            if((i + 1) % 9 == 0 && i != 0)
+            if ((i + 1) % 9 == 0 && i != 0)
             {
                 k = 0;
                 j++;
@@ -219,11 +270,63 @@ public class NumberPlateManager : MonoBehaviour
     }
 
     /// <summary>
+    /// NumText初期化
+    /// </summary>
+    /// <param name="array"></param>
+    /// <returns></returns>
+    private NumText[,] NumTextInit(NumText[] array)
+    {
+        NumText[,] numText = new NumText[9, 9];
+        int j = 0, k = 0;
+
+        for (int i = 0; i < 81; i++)
+        {
+            numText[j, k] = array[i];
+            k++;
+            if ((i + 1) % 9 == 0 && i != 0)
+            {
+                k = 0;
+                j++;
+            }
+        }
+
+        return numText;
+    }
+
+    private void NumTextAns(int[,] array)
+    {
+        for(int i = 0; i < 9; i++)
+        {
+            for(int j = 0; j < 9; j++)
+            {
+                numTexts[i, j].ansInt = array[i, j];
+            }
+        }
+    }
+
+    /// <summary>
     /// 問題変更
     /// </summary>
     public void AnsChange()
     {
+        selectedNumbers.Clear();
         ansNum = ShuffleAns(defaultNum);
+        NumTextAns(ansNum);
         DrawText();
+        SelectRandomNumbers();
+        HideText();
+    }
+
+    /// <summary>
+    /// 解答を隠す
+    /// </summary>
+    public void HideText()
+    {
+        for (int i = 0; i < blankToSelect; i++)
+        {
+            int j = selectedNumbers[i] / 9;
+            int k = selectedNumbers[i] % 9;
+            text[j, k].text = "";
+        }
     }
 }
