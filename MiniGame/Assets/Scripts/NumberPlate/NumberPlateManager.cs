@@ -27,6 +27,8 @@ public class NumberPlateManager : MonoBehaviour
 
     private int selectNum = 0;
 
+    private NumText numText;
+
     [SerializeField, Header("空欄の数")]
     private int blankToSelect = 30;
 
@@ -53,14 +55,15 @@ public class NumberPlateManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             if(nowImage != null) nowImage.color = Color.white;
+            if (numText != null) numText = null;
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
 
-            if (hit.collider != null && hit.collider.gameObject.TryGetComponent<NumText>(out NumText numText))
+            if (hit.collider != null && hit.collider.gameObject.TryGetComponent<NumText>(out NumText numT))
             {
-                nowImage = numText.bg;
+                nowImage = numT.bg;
                 nowImage.color = Color.green;
-
+                numText = numT;
 
             }
         }
@@ -328,5 +331,51 @@ public class NumberPlateManager : MonoBehaviour
             int k = selectedNumbers[i] % 9;
             text[j, k].text = "";
         }
+    }
+
+    /// <summary>
+    /// 数字入力ボタン
+    /// </summary>
+    /// <param name="value"></param>
+    public void SelectNumButton(int value)
+    {
+        numText.text.text = value.ToString();
+        numText.text.color = Color.black;
+        if (numText.ansInt != value) NumMiss();
+        else if (AnsChack()) GameClear();
+    }
+
+    /// <summary>
+    /// 間違えた時の処理
+    /// </summary>
+    private void NumMiss()
+    {
+        numText.text.color = Color.red;
+
+    }
+
+    /// <summary>
+    /// 解答確認
+    /// </summary>
+    /// <returns></returns>
+    private bool AnsChack()
+    {
+        for(int i = 0; i < 9; i++)
+        {
+            for(int j = 0; j < 9; j++)
+            {
+                if (ansNum[i, j] != int.Parse(text[i, j].text)) return false;
+            }
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// ゲームクリア
+    /// </summary>
+    private void GameClear()
+    {
+        Debug.Log("ゲームクリア");
     }
 }
