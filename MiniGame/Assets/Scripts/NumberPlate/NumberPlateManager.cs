@@ -4,119 +4,7 @@ using UnityEngine.UI;
 
 public class NumberPlateManager : MonoBehaviour
 {
-    private int[,,] defaultNum = new int[,,]
-    {
-        {
-            {1,4,7,2,5,8,3,6,9},
-            {2,5,8,3,6,9,4,7,1},
-            {3,6,9,4,7,1,5,8,2},
-            {4,7,1,5,8,2,6,9,3},
-            {5,8,2,6,9,3,7,1,4},
-            {6,9,3,7,1,4,8,2,5},
-            {7,1,4,8,2,5,9,3,6},
-            {8,2,5,9,3,6,1,4,7},
-            {9,3,6,1,4,7,2,5,8}
-        },
-        {
-            {7,2,6,3,4,8,1,9,5},
-            {5,9,4,1,2,7,3,8,6},
-            {3,1,8,6,5,9,7,4,2},
-            {4,7,3,5,1,6,8,2,9},
-            {6,8,2,9,7,3,4,5,1},
-            {9,5,1,2,8,4,6,7,3},
-            {1,4,5,7,6,2,9,3,8},
-            {2,3,7,8,9,1,5,6,4},
-            {8,6,9,4,3,5,2,1,7}
-        },
-        {
-            {2,3,4,8,1,5,7,6,9},
-            {5,8,1,9,7,6,4,2,3},
-            {9,6,7,4,2,3,5,8,1},
-            {3,4,2,6,8,1,9,5,7},
-            {8,7,5,3,4,9,6,1,2},
-            {6,1,9,2,5,7,3,4,8},
-            {1,5,6,7,3,2,8,9,4},
-            {4,2,3,5,9,8,1,7,6},
-            {7,9,8,1,6,4,2,3,5}
-        },
-        {
-            {2,9,7,8,4,5,1,6,3},
-            {6,5,4,2,1,3,9,8,7},
-            {8,3,1,7,6,9,2,5,4},
-            {3,4,6,5,9,2,7,1,8},
-            {9,2,8,6,7,1,3,4,5},
-            {1,7,5,4,3,8,6,9,2},
-            {7,6,3,1,8,4,5,2,9},
-            {4,1,2,9,5,7,8,3,6},
-            {5,8,9,3,2,6,4,7,1}
-        },
-        {
-            {3,1,8,9,2,4,7,5,6},
-            {7,4,9,6,8,5,3,2,1},
-            {6,2,5,1,7,3,8,9,4},
-            {5,9,7,8,6,2,4,1,3},
-            {2,3,1,7,4,9,6,8,5},
-            {8,6,4,3,5,1,9,7,2},
-            {1,7,3,5,9,6,2,4,8},
-            {9,5,2,4,3,8,1,6,7},
-            {4,8,6,2,1,7,5,3,9}
-        },
-        {
-            {1,5,7,9,6,4,2,3,8},
-            {9,6,4,2,8,3,1,5,7},
-            {3,2,8,5,7,1,4,9,6},
-            {7,8,6,4,2,9,3,1,5},
-            {4,3,9,1,5,8,6,7,2},
-            {2,1,5,6,3,7,9,8,4},
-            {5,4,3,7,9,2,8,6,1},
-            {8,7,2,3,1,6,5,4,9},
-            {6,9,1,8,4,5,7,2,3}
-        },
-        {
-            {3,1,5,8,4,2,6,9,7},
-            {7,9,4,5,6,1,3,8,2},
-            {2,8,6,7,9,3,4,5,1},
-            {6,3,9,1,2,8,7,4,5},
-            {4,7,1,9,5,6,8,2,3},
-            {8,5,2,4,3,7,9,1,6},
-            {5,4,7,3,1,9,2,6,8},
-            {9,2,3,6,8,5,1,7,4},
-            {1,6,8,2,7,4,5,3,9}
-        },
-        {
-            {1,9,7,8,6,3,4,2,5},
-            {8,4,6,9,2,5,7,1,3},
-            {5,3,2,1,4,7,8,6,9},
-            {2,5,4,7,9,1,3,8,6},
-            {3,6,8,2,5,4,1,9,7},
-            {9,7,1,6,3,8,2,5,4},
-            {4,8,3,5,1,9,6,7,2},
-            {6,1,5,4,7,2,9,3,8},
-            {7,2,9,3,8,6,5,4,1}
-        },
-        {
-            {4,9,8,7,3,2,5,6,1},
-            {6,1,2,9,5,4,7,8,3},
-            {3,5,7,1,6,8,4,2,9},
-            {2,3,5,6,1,9,8,7,4},
-            {7,8,4,3,2,5,1,9,6},
-            {9,6,1,8,4,7,2,3,5},
-            {5,7,6,4,8,3,9,1,2},
-            {8,4,3,2,9,1,6,5,7},
-            {1,2,9,5,7,6,3,4,8}
-        },
-        {
-            {4,2,8,5,6,3,1,7,9},
-            {1,7,9,2,4,8,5,3,6},
-            {3,5,6,1,7,9,2,4,8},
-            {8,4,5,3,9,2,6,1,7},
-            {6,1,7,4,8,5,9,2,3},
-            {9,3,2,7,1,6,4,8,5},
-            {7,9,4,6,3,1,8,5,2},
-            {2,6,3,8,5,4,7,9,1},
-            {5,8,1,9,2,7,3,6,4}
-        },
-    };
+    private readonly NumberTemplate numberTemplate = new();
 
     private int[,] ansNum = new int[9, 9];
 
@@ -124,9 +12,7 @@ public class NumberPlateManager : MonoBehaviour
 
     private NumText[,] numTexts;
 
-    private List<int> selectedNumbers = new List<int>();
-
-    private int selectNum = 0;
+    private readonly List<int> selectedNumbers = new();
 
     private NumText numText;
 
@@ -137,6 +23,18 @@ public class NumberPlateManager : MonoBehaviour
     private int shuffle = 100;
 
     [SerializeField]
+    private Text timeText;
+
+    [SerializeField]
+    private Text missText;
+
+    private float shakeDuration = 0;
+
+    private float shakeAmount = 0.7f;
+
+    private readonly float decreaseFactor = 1.0f;
+
+    [SerializeField]
     private Text[] defaultText;
 
     [SerializeField]
@@ -144,15 +42,40 @@ public class NumberPlateManager : MonoBehaviour
 
     private Image nowImage;
 
+    private Transform cameraTransform;
+
+    private Vector3 originalPos;
+
+    private int missCount = 0;
+
+    private float time = 0;
+
+    private int minutes = 0;
+
+    private int second = 0;
+
+    private bool clearFlg = false;
+
     void Start()
     {
         text = TextInit(defaultText);
         numTexts = NumTextInit(defaultNumText);
+        cameraTransform = Camera.main.transform;
+        originalPos = cameraTransform.localPosition;
+        missCount = 0;
+        time = 0;
+        minutes = 0;
+        second = 0;
+        clearFlg = false;
+        missText.text = "Miss:" + missCount.ToString();
+        timeText.text = minutes.ToString("d2") + ":" + second.ToString("d2");
         AnsChange();
     }
 
     void Update()
     {
+        if (clearFlg) return;
+        //クリック処理
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -167,6 +90,33 @@ public class NumberPlateManager : MonoBehaviour
 
             }
         }
+
+        //画面揺れ処理
+        if (shakeDuration > 0)
+        {
+            cameraTransform.localPosition = originalPos + Random.insideUnitSphere * shakeAmount;
+
+            shakeDuration -= Time.deltaTime * decreaseFactor;
+        }
+        else
+        {
+            shakeDuration = 0f;
+            cameraTransform.localPosition = originalPos;
+        }
+
+        //タイム処理
+        time += Time.deltaTime;
+        if(time >= 1.0f)
+        {
+            time = 0;
+            second++;
+            if(second >= 60)
+            {
+                second = 0;
+                minutes++;
+            }
+            timeText.text = minutes.ToString("d2") + ":" + second.ToString("d2");
+        }
     }
 
     /// <summary>
@@ -176,13 +126,13 @@ public class NumberPlateManager : MonoBehaviour
     private int[,] NumTempInit()
     {
         int[,] swappedArray = new int[9,9];
-        int rand = Random.Range(0, 10);
+        int rand = Random.Range(0, numberTemplate.defaultNum.GetLength(0));
 
         for(int i = 0; i < 9; i++)
         {
             for(int j = 0; j < 9; j++)
             {
-                swappedArray[i, j] = defaultNum[rand, i, j];
+                swappedArray[i, j] = numberTemplate.defaultNum[rand, i, j];
             }
         }
 
@@ -478,7 +428,9 @@ public class NumberPlateManager : MonoBehaviour
     private void NumMiss()
     {
         numText.text.color = Color.red;
-
+        ShakeCamera(0.1f, 0.2f);
+        missCount++;
+        missText.text = "Miss:" + missCount.ToString();
     }
 
     /// <summary>
@@ -504,5 +456,17 @@ public class NumberPlateManager : MonoBehaviour
     private void GameClear()
     {
         Debug.Log("ゲームクリア");
+        clearFlg = true;
+    }
+
+    /// <summary>
+    /// 画面揺れ
+    /// </summary>
+    /// <param name="duration"></param>
+    /// <param name="amount"></param>
+    private void ShakeCamera(float duration, float amount)
+    {
+        shakeDuration = duration;
+        shakeAmount = amount;
     }
 }
