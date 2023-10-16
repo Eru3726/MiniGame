@@ -3,19 +3,19 @@ using UnityEngine.UI;
 
 public class NumText : MonoBehaviour
 {
-    [HideInInspector]
+    //[HideInInspector]
     public Image bg;
 
-    [HideInInspector]
+    //[HideInInspector]
     public Text text;
 
-    [HideInInspector]
+    //[HideInInspector]
     public int ansInt;
 
-    [HideInInspector]
+    //[HideInInspector]
     public bool ansFlg = false;
 
-    void Start()
+    void Awake()
     {
         bg = GetComponent<Image>();
         text = GetComponentInChildren<Text>();

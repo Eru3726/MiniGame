@@ -40,6 +40,9 @@ public class NumberPlateManager : MonoBehaviour
     [SerializeField]
     private NumText[] defaultNumText;
 
+    [SerializeField]
+    private Button[] numButton;
+
     private Image nowImage;
 
     private Transform cameraTransform;
@@ -54,7 +57,11 @@ public class NumberPlateManager : MonoBehaviour
 
     private int second = 0;
 
-    private bool clearFlg = false;
+    private int timer = 0;
+
+    private bool clearFlg = true;
+
+    private int score = 0;
 
     void Start()
     {
@@ -62,19 +69,15 @@ public class NumberPlateManager : MonoBehaviour
         numTexts = NumTextInit(defaultNumText);
         cameraTransform = Camera.main.transform;
         originalPos = cameraTransform.localPosition;
-        missCount = 0;
-        time = 0;
-        minutes = 0;
-        second = 0;
-        clearFlg = false;
-        missText.text = "Miss:" + missCount.ToString();
-        timeText.text = minutes.ToString("d2") + ":" + second.ToString("d2");
-        AnsChange();
+        for (int i = 0; i < 9; i++) numButton[i].interactable = false;
+        clearFlg = true;
+        //AnsChange();
     }
 
     void Update()
     {
         if (clearFlg) return;
+
         //クリック処理
         if (Input.GetMouseButtonDown(0))
         {
@@ -109,6 +112,7 @@ public class NumberPlateManager : MonoBehaviour
         if(time >= 1.0f)
         {
             time = 0;
+            timer++;
             second++;
             if(second >= 60)
             {
@@ -366,6 +370,10 @@ public class NumberPlateManager : MonoBehaviour
         return numText;
     }
 
+    /// <summary>
+    /// NumTextの解答更新
+    /// </summary>
+    /// <param name="array"></param>
     private void NumTextAns(int[,] array)
     {
         for (int i = 0; i < 9; i++)
@@ -383,7 +391,7 @@ public class NumberPlateManager : MonoBehaviour
     /// </summary>
     public void AnsChange()
     {
-        selectedNumbers.Clear();
+        Init();
         ansNum = ShuffleAns(NumTempInit());
         NumTextAns(ansNum);
         DrawText();
@@ -457,6 +465,9 @@ public class NumberPlateManager : MonoBehaviour
     {
         Debug.Log("ゲームクリア");
         clearFlg = true;
+        score = (3600 - timer) - (missCount * 30);
+        Debug.Log("Score:" + score);
+        for (int i = 0; i < 9; i++) numButton[i].interactable = false;
     }
 
     /// <summary>
@@ -468,5 +479,34 @@ public class NumberPlateManager : MonoBehaviour
     {
         shakeDuration = duration;
         shakeAmount = amount;
+    }
+
+    /// <summary>
+    /// 初期化
+    /// </summary>
+    private void Init()
+    {
+        missCount = 0;
+        time = 0;
+        timer = 0;
+        minutes = 0;
+        second = 0;
+        score = 0;
+        clearFlg = false;
+        missText.text = "Miss:" + missCount.ToString();
+        timeText.text = minutes.ToString("d2") + ":" + second.ToString("d2");
+        selectedNumbers.Clear();
+        for (int i = 0; i < 9; i++)
+        {
+            numButton[i].interactable = true;
+            for(int j = 0; j < 9; j++)
+            {
+                text[i, j].color = Color.black;
+            }
+        }
+        if (nowImage != null) nowImage.color = Color.white;
+        nowImage = numTexts[0,0].bg;
+        nowImage.color = Color.green;
+        numText = numTexts[0, 0];
     }
 }
