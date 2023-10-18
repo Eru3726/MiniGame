@@ -33,14 +33,14 @@ public class Load : MonoBehaviour
 		if (SL == 0)
 		{
 			//裏でScene2を読み込む
-			async = SceneManager.LoadSceneAsync("Scene2");
+			async = SceneManager.LoadSceneAsync("NumberplateScene");
 		}
 
 		//読み込みたいシーンが増えたらelseifを使って増やしていく
 		else if (SL == 1)
 		{
-			//async = SceneManager.LoadSceneAsync("");
-		}
+            async = SceneManager.LoadSceneAsync("TitleScene");
+        }
 
 		//ロード完了してもシーン移行しないようにする
 		async.allowSceneActivation = false;

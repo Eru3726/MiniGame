@@ -12,6 +12,15 @@ public class TitleManager : MonoBehaviour
     public GameObject NameUI;
     public InputField inputField;
 
+    [SerializeField]
+    private GameObject rankingObj;
+
+    [SerializeField]
+    private GameObject canObj;
+
+    [SerializeField]
+    private PlayFabController playFab;
+
     private int characterLimit = 20;
 
     private bool nameFlg = false;
@@ -19,7 +28,8 @@ public class TitleManager : MonoBehaviour
     private void Start()
     {
         NameUI.SetActive(false);
-
+        rankingObj.SetActive(false);
+        canObj.SetActive(false);
         data.Read();
 
         if (GameData.playerName == null)
@@ -29,6 +39,7 @@ public class TitleManager : MonoBehaviour
         else
         {
             nameFlg = true;
+            canObj.SetActive(true);
         }
 
         if (GameData.playerID == null)
@@ -45,14 +56,6 @@ public class TitleManager : MonoBehaviour
         inputField.onValueChanged.AddListener(OnInputValueChanged);
     }
 
-    void Update()
-    {
-        if (Input.anyKey && nameFlg)
-        {
-            fade.FadeIn(1f, () => SceneManager.LoadScene("LoadScene"));
-        }
-    }
-
     public void Decision()
     {
         if (inputField != null)
@@ -62,10 +65,12 @@ public class TitleManager : MonoBehaviour
             data.Save();
 
             nameFlg = true;
+            canObj.SetActive(true);
 
             NameUI.SetActive(false);
         }
     }
+
 
     private void OnInputValueChanged(string value)
     {
@@ -74,5 +79,24 @@ public class TitleManager : MonoBehaviour
             // 文字数が制限を超えた場合は、制限以内にトリミング
             inputField.text = value.Substring(0, characterLimit);
         }
+    }
+
+    public void RankingOpen()
+    {
+        canObj.SetActive(false);
+        rankingObj.SetActive(true);
+        playFab.GetLeaderboard();
+    }
+
+    public void RankingClose()
+    {
+        rankingObj.SetActive(false);
+        canObj.SetActive(true);
+    }
+
+    public void GamePlay()
+    {
+        Load.SL = 0;
+        if (nameFlg) fade.FadeIn(1f, () => SceneManager.LoadScene("LoadScene"));
     }
 }

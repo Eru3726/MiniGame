@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class NumberPlateManager : MonoBehaviour
@@ -28,11 +29,23 @@ public class NumberPlateManager : MonoBehaviour
     [SerializeField]
     private Text missText;
 
+    [SerializeField]
+    private Text scoreText;
+
+    [SerializeField] 
+    private Fade fade;
+
+    [SerializeField]
+    private GameObject clearUI;
+
     private float shakeDuration = 0;
 
     private float shakeAmount = 0.7f;
 
     private readonly float decreaseFactor = 1.0f;
+
+    [SerializeField]
+    private PlayFabController playFab;
 
     [SerializeField]
     private Text[] defaultText;
@@ -71,7 +84,7 @@ public class NumberPlateManager : MonoBehaviour
         originalPos = cameraTransform.localPosition;
         for (int i = 0; i < 9; i++) numButton[i].interactable = false;
         clearFlg = true;
-        //AnsChange();
+        AnsChange();
     }
 
     void Update()
@@ -467,7 +480,10 @@ public class NumberPlateManager : MonoBehaviour
         clearFlg = true;
         score = (3600 - timer) - (missCount * 30);
         Debug.Log("Score:" + score);
+        playFab.SubmitScore(score);
         for (int i = 0; i < 9; i++) numButton[i].interactable = false;
+        clearUI.SetActive(true);
+        scoreText.text = "スコア：" + score.ToString();
     }
 
     /// <summary>
@@ -508,5 +524,11 @@ public class NumberPlateManager : MonoBehaviour
         nowImage = numTexts[0,0].bg;
         nowImage.color = Color.green;
         numText = numTexts[0, 0];
+    }
+
+    public void TitleBack()
+    {
+        Load.SL = 1;
+        fade.FadeIn(1f, () => SceneManager.LoadScene("LoadScene"));
     }
 }
