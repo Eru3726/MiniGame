@@ -61,7 +61,7 @@ public class PlayFabController : MonoBehaviour
             {
                 Debug.Log($"{item.Position + 1}位:{item.DisplayName} " + $"スコア {item.StatValue}");
 
-                text[item.Position].text = $"{item.Position + 1}位:{item.DisplayName} " + item.StatValue.ToString();
+                text[item.Position].text = $"{item.Position + 1}位:{item.DisplayName} " + $"スコア:{item.StatValue}";
 
                 if (item.Position + 1 == 10)
                 {

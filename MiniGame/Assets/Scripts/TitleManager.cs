@@ -1,5 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+using PlayFab;
+using PlayFab.ClientModels;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -40,6 +40,7 @@ public class TitleManager : MonoBehaviour
         {
             nameFlg = true;
             canObj.SetActive(true);
+            Debug.Log("PlayerName：" + GameData.playerName);
         }
 
         if (GameData.playerID == null)
@@ -49,7 +50,6 @@ public class TitleManager : MonoBehaviour
         }
 
         Debug.Log("PlayerID：" + GameData.playerID);
-        Debug.Log("PlayerName：" + GameData.playerName);
 
         text.text = "PlayerID：" + GameData.playerID;
 
@@ -61,6 +61,7 @@ public class TitleManager : MonoBehaviour
         if (inputField != null)
         {
             GameData.playerName = inputField.text;
+            Debug.Log("PlayerName：" + GameData.playerName);
 
             data.Save();
 
@@ -68,6 +69,23 @@ public class TitleManager : MonoBehaviour
             canObj.SetActive(true);
 
             NameUI.SetActive(false);
+
+            PlayFabClientAPI.LoginWithCustomID(
+            new LoginWithCustomIDRequest
+            {
+                TitleId = PlayFabSettings.TitleId,
+                CustomId = $"{GameData.playerID}",
+                CreateAccount = true,
+            }
+        , result =>
+        {
+            Debug.Log("ログイン成功！");
+            SetDisplayName(GameData.playerName);
+            //SubmitScore(400);
+        }, error =>
+        {
+            Debug.Log(error.GenerateErrorReport());
+        });
         }
     }
 
@@ -98,5 +116,28 @@ public class TitleManager : MonoBehaviour
     {
         Load.SL = 0;
         if (nameFlg) fade.FadeIn(1f, () => SceneManager.LoadScene("LoadScene"));
+    }
+
+    // アカウントの表示名を設定するメソッド
+    public void SetDisplayName(string displayName)
+    {
+        var request = new UpdateUserTitleDisplayNameRequest
+        {
+            DisplayName = displayName
+        };
+
+        PlayFabClientAPI.UpdateUserTitleDisplayName(request, OnDisplayNameSetSuccess, OnDisplayNameSetFailure);
+    }
+
+    // 表示名設定成功時のコールバック
+    private void OnDisplayNameSetSuccess(UpdateUserTitleDisplayNameResult result)
+    {
+        Debug.Log("Display name set successfully!");
+    }
+
+    // 表示名設定失敗時のコールバック
+    private void OnDisplayNameSetFailure(PlayFabError error)
+    {
+        Debug.LogError("Failed to set display name: " + error.ErrorMessage);
     }
 }
