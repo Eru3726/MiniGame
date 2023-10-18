@@ -476,9 +476,8 @@ public class NumberPlateManager : MonoBehaviour
     /// </summary>
     private void GameClear()
     {
-        Debug.Log("ゲームクリア");
         clearFlg = true;
-        score = (3600 - timer) - (missCount * 30);
+        score = (5000 - timer * 3) - (missCount * 50);
         Debug.Log("Score:" + score);
         playFab.SubmitScore(score);
         for (int i = 0; i < 9; i++) numButton[i].interactable = false;

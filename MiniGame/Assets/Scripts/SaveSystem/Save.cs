@@ -14,21 +14,40 @@ public class Save : MonoBehaviour
 
     private void DoSave()
     {
-#if UNITY_EDITOR
-        //UnityEditor上なら
-        //Assetファイルの中のSaveファイルのパスを入れる
-        string path = Application.dataPath + "/Save";
+//#if UNITY_EDITOR
+//        //UnityEditor上なら
+//        //Assetファイルの中のSaveファイルのパスを入れる
+//        string path = Application.dataPath + "/Save";
 
-#else
-        //そうでなければ
-        //.exeがあるところにSaveファイルを作成しそこのパスを入れる
-        Directory.CreateDirectory("Save");
-        string path = Directory.GetCurrentDirectory() + "/Save";
+//#else
+//        //そうでなければ
+//        //.exeがあるところにSaveファイルを作成しそこのパスを入れる
+//        Directory.CreateDirectory("Save");
+//        string path = Directory.GetCurrentDirectory() + "/Save";
         
-#endif
+//#endif
+
+        string saveDirectory;
+
+        if (Application.isEditor)
+        {
+            // エディター上で実行する場合、Assetsフォルダ内にセーブファイルを保存
+            saveDirectory = Application.dataPath + "/Save";
+        }
+        else
+        {
+            // Androidデバイス上で実行する場合、外部ストレージにセーブファイルを保存
+            saveDirectory = Path.Combine(Application.persistentDataPath, "Save");
+
+            // ディレクトリが存在しない場合、作成
+            if (!Directory.Exists(saveDirectory))
+            {
+                Directory.CreateDirectory(saveDirectory);
+            }
+        }
 
         //セーブファイルのパスを設定
-        string SaveFilePath = path + "/save" + DataManager.saveFile + ".bytes";
+        string SaveFilePath = saveDirectory + "/save" + DataManager.saveFile + ".bytes";
 
         // セーブデータの作成
         SaveData saveData = CreateSaveData();

@@ -61,6 +61,7 @@ public class TitleManager : MonoBehaviour
         if (inputField != null)
         {
             GameData.playerName = inputField.text;
+            if (GameData.playerName == "") GameData.playerName = "NoName";
             Debug.Log("PlayerName：" + GameData.playerName);
 
             data.Save();
