@@ -41,6 +41,9 @@ public class NumberPlateManager : MonoBehaviour
     [SerializeField]
     private GameObject clearUI;
 
+    [SerializeField]
+    private AdMobInterstitial interstitial;
+
     private float shakeDuration = 0;
 
     private float shakeAmount = 0.7f;
@@ -87,6 +90,7 @@ public class NumberPlateManager : MonoBehaviour
         originalPos = cameraTransform.localPosition;
         for (int i = 0; i < 9; i++) numButton[i].interactable = false;
         clearFlg = true;
+        interstitial.number = GetComponent<NumberPlateManager>();
         AnsChange();
     }
 
@@ -480,13 +484,9 @@ public class NumberPlateManager : MonoBehaviour
     private void GameClear()
     {
         clearFlg = true;
+        interstitial.ShowAdMobInterstitial();
         score = (5000 - timer * 3) - (missCount * 50);
-        if (GameData.highScore < score) GameData.highScore = score;
-        playFab.SubmitScore(score);
         for (int i = 0; i < 9; i++) numButton[i].interactable = false;
-        clearUI.SetActive(true);
-        scoreText.text = "スコア：" + score.ToString();
-        highScoreText.text = "ハイスコア：" + GameData.highScore.ToString();
     }
 
     /// <summary>
@@ -543,5 +543,14 @@ public class NumberPlateManager : MonoBehaviour
             // TitleSceneに戻る
             SceneManager.LoadScene("TitleScene");
         }
+    }
+
+    public void Fin()
+    {
+        if (GameData.highScore < score) GameData.highScore = score;
+        playFab.SubmitScore(score);
+        clearUI.SetActive(true);
+        scoreText.text = "スコア：" + score.ToString();
+        highScoreText.text = "ハイスコア：" + GameData.highScore.ToString();
     }
 }
