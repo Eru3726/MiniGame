@@ -4,4 +4,5 @@ public class GameData
 {
     public static string playerID;
     public static string playerName;
+    public static int highScore = 0;
 }

@@ -32,6 +32,9 @@ public class NumberPlateManager : MonoBehaviour
     [SerializeField]
     private Text scoreText;
 
+    [SerializeField]
+    private Text highScoreText;
+
     [SerializeField] 
     private Fade fade;
 
@@ -478,11 +481,12 @@ public class NumberPlateManager : MonoBehaviour
     {
         clearFlg = true;
         score = (5000 - timer * 3) - (missCount * 50);
-        Debug.Log("Score:" + score);
+        if (GameData.highScore < score) GameData.highScore = score;
         playFab.SubmitScore(score);
         for (int i = 0; i < 9; i++) numButton[i].interactable = false;
         clearUI.SetActive(true);
         scoreText.text = "スコア：" + score.ToString();
+        highScoreText.text = "ハイスコア：" + GameData.highScore.ToString();
     }
 
     /// <summary>
@@ -529,5 +533,15 @@ public class NumberPlateManager : MonoBehaviour
     {
         Load.SL = 1;
         fade.FadeIn(1f, () => SceneManager.LoadScene("LoadScene"));
+    }
+
+    private void OnApplicationPause(bool isPaused)
+    {
+        if (isPaused)
+        {
+            // アプリがバックグラウンドに行ったとき
+            // TitleSceneに戻る
+            SceneManager.LoadScene("TitleScene");
+        }
     }
 }

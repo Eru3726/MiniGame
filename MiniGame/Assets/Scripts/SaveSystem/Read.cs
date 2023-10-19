@@ -98,6 +98,7 @@ public class Read : MonoBehaviour
     {
         GameData.playerID = saveData.playerID;
         GameData.playerName = saveData.playerName;
+        GameData.highScore = saveData.highScore;
     }
 
 
@@ -105,8 +106,8 @@ public class Read : MonoBehaviour
     private AesManaged GetAesManager()
     {
         //任意の半角英数16文字(Save.csと同じやつに)
-        string aesIv = "0987654321098765";
-        string aesKey = "1234567890123456";
+        string aesIv = "3296823210648320";
+        string aesKey = "8621374721350237";
 
         AesManaged aes = new AesManaged();
         aes.KeySize = 128;

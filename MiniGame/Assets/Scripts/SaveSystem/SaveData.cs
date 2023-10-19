@@ -5,4 +5,5 @@ public class SaveData
 {
     public string playerID;
     public string playerName;
+    public int highScore;
 }
