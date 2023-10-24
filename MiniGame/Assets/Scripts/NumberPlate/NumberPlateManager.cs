@@ -50,8 +50,7 @@ public class NumberPlateManager : MonoBehaviour
 
     private readonly float decreaseFactor = 1.0f;
 
-    [SerializeField]
-    private PlayFabController playFab;
+    public PlayFabController playFab;
 
     [SerializeField]
     private Text[] defaultText;
@@ -80,7 +79,8 @@ public class NumberPlateManager : MonoBehaviour
 
     private bool clearFlg = true;
 
-    private int score = 0;
+    [HideInInspector]
+    public int score = 0;
 
     void Start()
     {
@@ -486,6 +486,9 @@ public class NumberPlateManager : MonoBehaviour
         clearFlg = true;
         interstitial.ShowAdMobInterstitial();
         score = (5000 - timer * 3) - (missCount * 50);
+        if (GameData.highScore < score) GameData.highScore = score;
+        scoreText.text = "スコア：" + score.ToString();
+        highScoreText.text = "ハイスコア：" + GameData.highScore.ToString();
         for (int i = 0; i < 9; i++) numButton[i].interactable = false;
     }
 
@@ -547,10 +550,6 @@ public class NumberPlateManager : MonoBehaviour
 
     public void Fin()
     {
-        if (GameData.highScore < score) GameData.highScore = score;
-        playFab.SubmitScore(score);
         clearUI.SetActive(true);
-        scoreText.text = "スコア：" + score.ToString();
-        highScoreText.text = "ハイスコア：" + GameData.highScore.ToString();
     }
 }
