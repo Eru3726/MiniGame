@@ -489,6 +489,7 @@ public class NumberPlateManager : MonoBehaviour
         if (GameData.highScore < score) GameData.highScore = score;
         scoreText.text = "スコア：" + score.ToString();
         highScoreText.text = "ハイスコア：" + GameData.highScore.ToString();
+        playFab.SubmitScore(GameData.highScore);
         for (int i = 0; i < 9; i++) numButton[i].interactable = false;
     }
 
@@ -551,6 +552,5 @@ public class NumberPlateManager : MonoBehaviour
     public void Fin()
     {
         clearUI.SetActive(true);
-        playFab.SubmitScore(GameData.highScore);
     }
 }
