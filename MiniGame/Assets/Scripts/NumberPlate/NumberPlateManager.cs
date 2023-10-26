@@ -35,7 +35,7 @@ public class NumberPlateManager : MonoBehaviour
     [SerializeField]
     private Text highScoreText;
 
-    [SerializeField] 
+    [SerializeField]
     private Fade fade;
 
     [SerializeField]
@@ -129,12 +129,12 @@ public class NumberPlateManager : MonoBehaviour
 
         //タイム処理
         time += Time.deltaTime;
-        if(time >= 1.0f)
+        if (time >= 1.0f)
         {
             time = 0;
             timer++;
             second++;
-            if(second >= 60)
+            if (second >= 60)
             {
                 second = 0;
                 minutes++;
@@ -149,12 +149,12 @@ public class NumberPlateManager : MonoBehaviour
     /// <returns></returns>
     private int[,] NumTempInit()
     {
-        int[,] swappedArray = new int[9,9];
+        int[,] swappedArray = new int[9, 9];
         int rand = Random.Range(0, numberTemplate.defaultNum.GetLength(0));
 
-        for(int i = 0; i < 9; i++)
+        for (int i = 0; i < 9; i++)
         {
-            for(int j = 0; j < 9; j++)
+            for (int j = 0; j < 9; j++)
             {
                 swappedArray[i, j] = numberTemplate.defaultNum[rand, i, j];
             }
@@ -521,13 +521,13 @@ public class NumberPlateManager : MonoBehaviour
         for (int i = 0; i < 9; i++)
         {
             numButton[i].interactable = true;
-            for(int j = 0; j < 9; j++)
+            for (int j = 0; j < 9; j++)
             {
                 text[i, j].color = Color.black;
             }
         }
         if (nowImage != null) nowImage.color = Color.white;
-        nowImage = numTexts[0,0].bg;
+        nowImage = numTexts[0, 0].bg;
         nowImage.color = Color.green;
         numText = numTexts[0, 0];
     }
@@ -551,5 +551,6 @@ public class NumberPlateManager : MonoBehaviour
     public void Fin()
     {
         clearUI.SetActive(true);
+        playFab.SubmitScore(GameData.highScore);
     }
 }

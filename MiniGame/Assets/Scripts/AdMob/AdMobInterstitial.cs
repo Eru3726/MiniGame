@@ -138,7 +138,6 @@ public class AdMobInterstitial : MonoBehaviour
             //インタースティシャル 再読み込み
             LoadInterstitialAd();
 
-            number.playFab.SubmitScore(number.score);
             number.Fin();
         };
 
