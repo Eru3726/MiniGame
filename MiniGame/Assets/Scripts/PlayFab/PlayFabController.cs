@@ -20,6 +20,7 @@ public class PlayFabController : MonoBehaviour
         , result =>
         {
             Debug.Log("ログイン成功！");
+            Debug.Log("PlayerName：" + GameData.playerName);
             SetDisplayName(GameData.playerName);
             //SubmitScore(400);
         }, error =>

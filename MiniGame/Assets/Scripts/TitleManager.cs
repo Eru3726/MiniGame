@@ -61,8 +61,7 @@ public class TitleManager : MonoBehaviour
         if (inputField != null)
         {
             GameData.playerName = inputField.text;
-            if (GameData.playerName == "") GameData.playerName = "NoName";
-            Debug.Log("PlayerName：" + GameData.playerName);
+            if (GameData.playerName.Length < 3 || GameData.playerName.Length > 7) GameData.playerName = "NoName";
 
             data.Save();
 
@@ -81,6 +80,7 @@ public class TitleManager : MonoBehaviour
         , result =>
         {
             Debug.Log("ログイン成功！");
+            Debug.Log("PlayerName：" + GameData.playerName);
             SetDisplayName(GameData.playerName);
             //SubmitScore(400);
         }, error =>
@@ -93,11 +93,11 @@ public class TitleManager : MonoBehaviour
 
     private void OnInputValueChanged(string value)
     {
-        if (value.Length > characterLimit)
-        {
-            // 文字数が制限を超えた場合は、制限以内にトリミング
-            inputField.text = value.Substring(0, characterLimit);
-        }
+        //if (value.Length > characterLimit)
+        //{
+        //    // 文字数が制限を超えた場合は、制限以内にトリミング
+        //    inputField.text = value.Substring(0, characterLimit);
+        //}
     }
 
     public void RankingOpen()
@@ -139,6 +139,6 @@ public class TitleManager : MonoBehaviour
     // 表示名設定失敗時のコールバック
     private void OnDisplayNameSetFailure(PlayFabError error)
     {
-        Debug.LogError("Failed to set display name: " + error.ErrorMessage);
+        Debug.LogError("Failed to set display name: " + error.GenerateErrorReport());
     }
 }
