@@ -5,4 +5,5 @@
     <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-6053383546997889~5694485316" />
     <meta-data android:name="com.google.unity.ads.UNITY_VERSION" android:value="2021.3.21f1" />
   </application>
+  <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
 </manifest>
