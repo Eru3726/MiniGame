@@ -515,7 +515,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: eb8e6d95541157b42bd9ca05510bfb64, type: 3}
-    m_FontSize: 210
+    m_FontSize: 185
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
@@ -525,8 +525,10 @@ MonoBehaviour:
     m_RichText: 1
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
-    m_LineSpacing: 1
-  m_Text: "\u30CA\u30F3\u30D0\u30FC\u30D7\u30EC\u30FC\u30C8"
+    m_LineSpacing: 0.79
+  m_Text: 'NumberPlate
+
+    Ranking'
 --- !u!222 &186872348
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1850,18 +1852,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: eb8e6d95541157b42bd9ca05510bfb64, type: 3}
-    m_FontSize: 175
+    m_FontSize: 226
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 189
+    m_MaxSize: 235
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\u30E9\u30F3\u30AD\u30F3\u30B0"
+  m_Text: Ranking
 --- !u!222 &1505608189
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3343,8 +3345,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -118.345, y: 10.549999}
-  m_SizeDelta: {x: 236.69, y: 21.099998}
+  m_AnchoredPosition: {x: -6.699997, y: 0.5999985}
+  m_SizeDelta: {x: 1877.02, y: 267.63}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7667890771475032787
 MonoBehaviour:
