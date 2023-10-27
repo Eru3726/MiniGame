@@ -20322,7 +20322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06de5a8e35d8cd844a9aa57d62e9530d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blankToSelect: 45
+  blankToSelect: 1
   shuffle: 1000
   timeText: {fileID: 535043828}
   missText: {fileID: 91169574}
@@ -20506,6 +20506,7 @@ MonoBehaviour:
   - {fileID: 535409920}
   - {fileID: 490958938}
   - {fileID: 1232863801}
+  adb: {fileID: 366676014}
   score: 0
 --- !u!4 &2082725920
 Transform:

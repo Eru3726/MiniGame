@@ -61,6 +61,9 @@ public class NumberPlateManager : MonoBehaviour
     [SerializeField]
     private Button[] numButton;
 
+    [SerializeField]
+    private AdMobBanner adb;
+
     private Image nowImage;
 
     private Transform cameraTransform;
@@ -535,15 +538,22 @@ public class NumberPlateManager : MonoBehaviour
 
     public void TitleBack()
     {
+        //バナー広告削除
+        adb.BannerDestroy();
+
         Load.SL = 1;
         fade.FadeIn(1f, () => SceneManager.LoadScene("LoadScene"));
     }
 
     private void OnApplicationPause(bool isPaused)
     {
-        if (isPaused)
+        if (isPaused && !clearFlg)
         {
             // アプリがバックグラウンドに行ったとき
+
+            //バナー広告削除
+            adb.BannerDestroy();
+
             // TitleSceneに戻る
             SceneManager.LoadScene("TitleScene");
         }
