@@ -20322,7 +20322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06de5a8e35d8cd844a9aa57d62e9530d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blankToSelect: 1
+  blankToSelect: 45
   shuffle: 1000
   timeText: {fileID: 535043828}
   missText: {fileID: 91169574}
