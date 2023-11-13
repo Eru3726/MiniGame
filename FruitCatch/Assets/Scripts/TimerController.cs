@@ -3,21 +3,23 @@ using UnityEngine.UI;
 
 public class TimerController : MonoBehaviour
 {
-    [SerializeField, Header("ƒQ[ƒ€ƒ^ƒCƒ€")]
+    [SerializeField, Header("ã‚²ãƒ¼ãƒ ã‚¿ã‚¤ãƒ ")]
     private float totalTime;
 
-    [SerializeField, Header("ƒ^ƒCƒ€ƒeƒLƒXƒg")]
+    [SerializeField, Header("ã‚¿ã‚¤ãƒ ãƒ†ã‚­ã‚¹ãƒˆ")]
     private Text timeText;
 
-    [SerializeField, Header("ƒŠƒUƒ‹ƒgUI")]
+    [SerializeField, Header("ãƒªã‚¶ãƒ«ãƒˆUI")]
     private GameObject resultUI;
 
     private int seconds;
     private GameObject fruitGenerator;
+    private GameObject player;
 
     void Start()
     {
         fruitGenerator = GameObject.Find("FruitGenerator");
+        player = GameObject.Find("Player");
         resultUI.SetActive(false);
     }
 
@@ -32,6 +34,7 @@ public class TimerController : MonoBehaviour
         else
         {
             Destroy(fruitGenerator);
+            Destroy(player);
             resultUI.SetActive(true);
         }
     }
