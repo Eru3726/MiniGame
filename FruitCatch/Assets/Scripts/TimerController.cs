@@ -9,9 +9,6 @@ public class TimerController : MonoBehaviour
     [SerializeField, Header("タイムテキスト")]
     private Text timeText;
 
-    [SerializeField, Header("リザルトUI")]
-    private GameObject resultUI;
-
     private int seconds;
     private GameObject fruitGenerator;
     private GameObject player;
@@ -20,7 +17,6 @@ public class TimerController : MonoBehaviour
     {
         fruitGenerator = GameObject.Find("FruitGenerator");
         player = GameObject.Find("Player");
-        resultUI.SetActive(false);
     }
 
     void Update()
@@ -33,9 +29,10 @@ public class TimerController : MonoBehaviour
         }
         else
         {
+            GameObject director = GameObject.Find("GameDirector");
+            director.GetComponent<GameDirector>().GameEnd();
             Destroy(fruitGenerator);
             Destroy(player);
-            resultUI.SetActive(true);
         }
     }
 }

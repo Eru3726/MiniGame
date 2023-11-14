@@ -28,7 +28,7 @@ public class Fruit : MonoBehaviour
         {
             //監督スクリプトにプレイヤと衝突したことを伝える
             GameObject director = GameObject.Find("GameDirector");
-            director.GetComponent<GameDirector>().fruitCount(score);
+            director.GetComponent<GameDirector>().FruitCount(score);
 
             //衝突した場合は矢を消す
             Destroy(gameObject);
