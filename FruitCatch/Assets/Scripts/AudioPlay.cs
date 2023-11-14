@@ -20,6 +20,9 @@ public class AudioPlay : MonoBehaviour
     [Header("BGMミュート")]
     public bool bgmMute = true;
 
+    [Header("SEミュート")]
+    public bool seMute = true;
+
     public static AudioPlay instance;
 
     private void Awake()
@@ -35,6 +38,7 @@ public class AudioPlay : MonoBehaviour
     private void Update()
     {
         bgmAudioSource.mute = bgmMute;
+        seAudioSource.mute = seMute;
     }
 
     public void BGMPlay(int value)
@@ -53,5 +57,6 @@ public class AudioPlay : MonoBehaviour
     {
         if (value < seAudioClip.Length && 0 <= value) seAudioSource.clip = seAudioClip[value];
         seAudioSource.Play();
+        Debug.Log("SEEnd");
     }
 }

@@ -58,9 +58,10 @@ public class GameDirector : MonoBehaviour
 
     public void GameEnd()
     {
+        if (gameFlg) return;
         gameFlg = true;
-        AudioPlay.instance.SEPlay(1);
         AudioPlay.instance.BGMStop();
+        AudioPlay.instance.SEPlay(1);
         resultUI.SetActive(true);
         if (highScore < score) highScore = score;
         resultScoreText.text = "Score:" + score.ToString();
@@ -80,6 +81,7 @@ public class GameDirector : MonoBehaviour
         countText.text = "フルーツを\nキャッチして！";
         yield return new WaitForSeconds(1.0f);
         AudioPlay.instance.SEPlay(0);
+        Debug.Log("SEEnd2");
         countText.text = "3";
         yield return new WaitForSeconds(0.75f);
         countText.text = "2";
