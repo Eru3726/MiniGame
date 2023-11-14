@@ -14,7 +14,7 @@ public class FruitGenerator : MonoBehaviour
     [SerializeField]
     private GameObject bomPrefab;
 
-    public bool game = true;
+    public bool gameStart = true;
 
     [SerializeField]
     private float rightBorder = 2.2f;
@@ -69,7 +69,7 @@ public class FruitGenerator : MonoBehaviour
 
     private void Update()
     {
-        if (game == true)
+        if (gameStart == true)
         {
             Apple();
             Grape();

@@ -14,17 +14,48 @@ public class Player : MonoBehaviour
     private bool leftFlg = false;
     private bool rightFlg = false;
 
+    private Rigidbody2D rb;
+
+    private FruitGenerator fruitGenerator;
+
+    private void Start()
+    {
+        GameObject fruitGeneratorObj = GameObject.Find("FruitGenerator");
+        fruitGenerator = fruitGeneratorObj.GetComponent<FruitGenerator>();
+        rb = GetComponent<Rigidbody2D>();
+    }
+
     void Update()
     {
+        if (!fruitGenerator.gameStart) return;
+
         //←を入力時leftPositionBorderまで左移動
-        if (leftFlg && this.transform.position.x > leftPositionBorder) this.transform.position += speed * Time.deltaTime * Vector3.left;
+        if (leftFlg)
+        {
+            if (this.transform.position.x < leftPositionBorder) rb.velocity = Vector2.zero;
+            else rb.velocity = speed * Vector3.left;
+        }
 
         //→を入力時rightPositionBorderまで右移動
-        if (rightFlg && this.transform.position.x < rightPositionBorder) this.transform.position += speed * Time.deltaTime * Vector3.right;
+        if (rightFlg)
+        {
+            if (this.transform.position.x > rightPositionBorder) rb.velocity = Vector2.zero;
+            else rb.velocity = speed * Vector3.right;
+        }
 
 #if UNITY_EDITOR
-        if(Input.GetKey(KeyCode.A) && this.transform.position.x > leftPositionBorder) this.transform.position += speed * Time.deltaTime * Vector3.left;
-        if(Input.GetKey(KeyCode.D) && this.transform.position.x < rightPositionBorder) this.transform.position += speed * Time.deltaTime * Vector3.right;
+        if (Input.GetKey(KeyCode.A))
+        {
+            if (this.transform.position.x < leftPositionBorder) rb.velocity = Vector2.zero;
+            else rb.velocity = speed * Vector3.left;
+        }
+        else if(Input.GetKeyUp(KeyCode.A)) rb.velocity = Vector2.zero;
+        if (Input.GetKey(KeyCode.D))
+        {
+            if (this.transform.position.x > rightPositionBorder) rb.velocity = Vector2.zero;
+            else rb.velocity = speed * Vector3.right;
+        }
+        else if (Input.GetKeyUp(KeyCode.D)) rb.velocity = Vector2.zero;
 #endif
     }
 
@@ -36,6 +67,7 @@ public class Player : MonoBehaviour
     public void OnLeftButtonUp()
     {
         leftFlg = false;
+        rb.velocity = Vector2.zero;
     }
 
     public void OnRightButtonDown()
@@ -46,5 +78,6 @@ public class Player : MonoBehaviour
     public void OnRightButtonUp()
     {
         rightFlg = false;
+        rb.velocity = Vector2.zero;
     }
 }

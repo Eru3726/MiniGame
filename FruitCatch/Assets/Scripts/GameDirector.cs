@@ -5,11 +5,15 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Collections;
 
 public class GameDirector : MonoBehaviour
 {
+    [SerializeField, Header("カウントテキスト")]
+    private Text countText;
+
     [SerializeField, Header("スコアテキスト")]
-    private Text text;
+    private Text scoreText;
 
     [SerializeField, Header("リザルトUI")]
     private GameObject resultUI;
@@ -26,6 +30,8 @@ public class GameDirector : MonoBehaviour
 
     private int highScore;
 
+    private FruitGenerator fruitGenerator;
+
     private void Awake()
     {
         Load();
@@ -35,6 +41,10 @@ public class GameDirector : MonoBehaviour
     {
         resultUI.SetActive(false);
         gameFlg = false;
+        GameObject fruitGeneratorObj = GameObject.Find("FruitGenerator");
+        fruitGenerator = fruitGeneratorObj.GetComponent<FruitGenerator>();
+        fruitGenerator.gameStart = false;
+        StartCoroutine(StartCount());
     }
 
     public void FruitCount(int value)
@@ -43,12 +53,14 @@ public class GameDirector : MonoBehaviour
         score += value;
         if (score < 0) score = 0;
         
-        text.text = string.Format("Score:{0:}", score);
+        scoreText.text = string.Format("Score:{0:}", score);
     }
 
     public void GameEnd()
     {
         gameFlg = true;
+        AudioPlay.instance.SEPlay(1);
+        AudioPlay.instance.BGMStop();
         resultUI.SetActive(true);
         if (highScore < score) highScore = score;
         resultScoreText.text = "Score:" + score.ToString();
@@ -59,6 +71,27 @@ public class GameDirector : MonoBehaviour
     {
 
         SceneManager.LoadScene("Title");
+    }
+
+    private IEnumerator StartCount()
+    {
+        AudioPlay.instance.BGMStop();
+        countText.enabled = true;
+        countText.text = "フルーツを\nキャッチして！";
+        yield return new WaitForSeconds(1.0f);
+        AudioPlay.instance.SEPlay(0);
+        countText.text = "3";
+        yield return new WaitForSeconds(0.75f);
+        countText.text = "2";
+        yield return new WaitForSeconds(0.75f);
+        countText.text = "1";
+        yield return new WaitForSeconds(0.75f);
+        countText.text = "スタート";
+        AudioPlay.instance.BGMPlay(0);
+        fruitGenerator.gameStart = true;
+        yield return new WaitForSeconds(0.75f);
+        countText.enabled = false;
+        yield break;
     }
 
     private void OnDestroy()

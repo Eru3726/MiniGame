@@ -10,17 +10,20 @@ public class TimerController : MonoBehaviour
     private Text timeText;
 
     private int seconds;
-    private GameObject fruitGenerator;
+    private GameObject fruitGeneratorObj;
+    private FruitGenerator fruitGenerator;
     private GameObject player;
 
     void Start()
     {
-        fruitGenerator = GameObject.Find("FruitGenerator");
+        fruitGeneratorObj = GameObject.Find("FruitGenerator");
+        fruitGenerator = fruitGeneratorObj.GetComponent<FruitGenerator>();
         player = GameObject.Find("Player");
     }
 
     void Update()
     {
+        if (!fruitGenerator.gameStart) return;
         if (totalTime > 0)
         {
             totalTime -= Time.deltaTime;
@@ -31,7 +34,7 @@ public class TimerController : MonoBehaviour
         {
             GameObject director = GameObject.Find("GameDirector");
             director.GetComponent<GameDirector>().GameEnd();
-            Destroy(fruitGenerator);
+            Destroy(fruitGeneratorObj);
             player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
         }
     }
