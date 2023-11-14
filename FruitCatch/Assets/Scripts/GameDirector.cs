@@ -52,7 +52,7 @@ public class GameDirector : MonoBehaviour
         if (gameFlg) return;
         score += value;
         if (score < 0) score = 0;
-        
+
         scoreText.text = string.Format("Score:{0:}", score);
     }
 
@@ -110,20 +110,17 @@ public class GameDirector : MonoBehaviour
         string path = Application.dataPath + "/Save";
 
 #else
-        string path = Path.Combine(Application.persistentDataPath, "Save");
+        //そうでなければ
+        //.exeがあるところにSaveファイルを作成しそこのパスを入れる
+        string path = Application.persistentDataPath;
+        
 #endif
-
-        // ディレクトリが存在しない場合、作成
-        if (!Directory.Exists(path))
-        {
-            Directory.CreateDirectory(path);
-        }
 
         //セーブファイルのパスを設定
         string SaveFilePath = path + "/save.bytes";
 
         // セーブデータの作成
-        SkillTreeSaveData saveData = CreateSaveData();
+        SaveData saveData = CreateSaveData();
 
         // セーブデータをJSON形式の文字列に変換
         string jsonString = JsonUtility.ToJson(saveData);
@@ -163,9 +160,8 @@ public class GameDirector : MonoBehaviour
 #else
         //そうでなければ
         //.exeがあるところにSaveファイルを作成しそこのパスを入れる
-        Directory.CreateDirectory("Save");
-        string path = Directory.GetCurrentDirectory() + "/Save";
-
+        string path = Application.persistentDataPath;
+        
 #endif
 
         //セーブファイルのパスを設定
@@ -188,7 +184,7 @@ public class GameDirector : MonoBehaviour
                 string decryptStr = Encoding.UTF8.GetString(arrDecrypt);
 
                 // JSON形式の文字列をセーブデータのクラスに変換
-                SkillTreeSaveData saveData = JsonUtility.FromJson<SkillTreeSaveData>(decryptStr);
+                SaveData saveData = JsonUtility.FromJson<SaveData>(decryptStr);
 
                 //データの反映
                 ReadData(saveData);
@@ -211,10 +207,10 @@ public class GameDirector : MonoBehaviour
     }
 
     // セーブデータの作成
-    private SkillTreeSaveData CreateSaveData()
+    private SaveData CreateSaveData()
     {
         //セーブデータのインスタンス化
-        SkillTreeSaveData saveData = new SkillTreeSaveData
+        SaveData saveData = new SaveData
         {
             highScore = highScore
         };
@@ -223,7 +219,7 @@ public class GameDirector : MonoBehaviour
     }
 
     //データの読み込み（反映）
-    private void ReadData(SkillTreeSaveData saveData)
+    private void ReadData(SaveData saveData)
     {
         highScore = saveData.highScore;
     }
@@ -235,10 +231,10 @@ public class GameDirector : MonoBehaviour
     private AesManaged GetAesManager()
     {
         //任意の半角英数16文字
-        string aesIv = "i9r032nu7f8g3wjk";
-        string aesKey = "safi8902fniop2w4";
+        string aesIv = "safi8902fniop2w4";
+        string aesKey = "dsag75e7t32w7fd8";
 
-        AesManaged aes = new AesManaged
+        AesManaged aes = new()
         {
             KeySize = 128,
             BlockSize = 128,
@@ -283,21 +279,27 @@ public class GameDirector : MonoBehaviour
     //セーブデータ削除
     public void Init()
     {
-#if UNITY_EDITOR
-        //UnityEditor上なら
-        //Assetファイルの中のSaveファイルのパスを入れる
-        string path = Application.dataPath + "/Save";
+        string saveDirectory;
 
-#else
-        //そうでなければ
-        //.exeがあるところにSaveファイルを作成しそこのパスを入れる
-        Directory.CreateDirectory("Save");
-        string path = Directory.GetCurrentDirectory() + "/Save";
+        if (Application.isEditor)
+        {
+            // エディター上で実行する場合、Assetsフォルダ内にセーブファイルを保存
+            saveDirectory = Application.dataPath + "/Save";
+        }
+        else
+        {
+            // Androidデバイス上で実行する場合、外部ストレージにセーブファイルを保存
+            saveDirectory = Path.Combine(Application.persistentDataPath, "Save");
 
-#endif
+            // ディレクトリが存在しない場合、作成
+            if (!Directory.Exists(saveDirectory))
+            {
+                Directory.CreateDirectory(saveDirectory);
+            }
+        }
 
         //ファイル削除
-        File.Delete(path + "/save.bytes");
+        File.Delete(saveDirectory + "/save.bytes");
 
         //リロード
         Load();
@@ -308,7 +310,7 @@ public class GameDirector : MonoBehaviour
 
 
 [Serializable]
-public class SkillTreeSaveData
+public class SaveData
 {
     public int highScore;
 }

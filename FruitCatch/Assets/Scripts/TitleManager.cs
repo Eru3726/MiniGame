@@ -12,6 +12,7 @@ public class TitleManager : MonoBehaviour
     {
         AudioPlay.instance.BGMPlay(0);
         muteFlg = AudioPlay.instance.bgmMute;
+        AudioPlay.instance.seMute = muteFlg;
         muteImage.SetActive(muteFlg);
     }
     public void GameStart()
