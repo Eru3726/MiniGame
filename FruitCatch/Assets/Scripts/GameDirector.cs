@@ -57,6 +57,7 @@ public class GameDirector : MonoBehaviour
 
     public void ReturnToTitle()
     {
+
         SceneManager.LoadScene("Title");
     }
 
