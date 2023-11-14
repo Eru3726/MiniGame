@@ -32,7 +32,7 @@ public class TimerController : MonoBehaviour
             GameObject director = GameObject.Find("GameDirector");
             director.GetComponent<GameDirector>().GameEnd();
             Destroy(fruitGenerator);
-            Destroy(player);
+            player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
         }
     }
 }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System;
 using System.IO;
 using System.Security.Cryptography;
@@ -24,7 +25,6 @@ public class GameDirector : MonoBehaviour
     private bool gameFlg = false;
 
     private int highScore;
-
 
     private void Awake()
     {
@@ -55,6 +55,11 @@ public class GameDirector : MonoBehaviour
         resultHighScoreText.text = "HighScore:" + highScore.ToString();
     }
 
+    public void ReturnToTitle()
+    {
+        SceneManager.LoadScene("Title");
+    }
+
     private void OnDestroy()
     {
         Save();
@@ -66,16 +71,17 @@ public class GameDirector : MonoBehaviour
 #if UNITY_EDITOR
         //UnityEditor上なら
         //Assetファイルの中のSaveファイルのパスを入れる
-        Directory.CreateDirectory("Save");
         string path = Application.dataPath + "/Save";
 
-#elif UNITY_ANDROID
-        //そうでなければ
-        //.exeがあるところにSaveファイルを作成しそこのパスを入れる
-        Directory.CreateDirectory("Save");
+#else
         string path = Path.Combine(Application.persistentDataPath, "Save");
-
 #endif
+
+        // ディレクトリが存在しない場合、作成
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
+        }
 
         //セーブファイルのパスを設定
         string SaveFilePath = path + "/save.bytes";
